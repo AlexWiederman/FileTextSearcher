@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Conventional",
+    "image": "conventional_oil.jfif",
+    "price": "55",
+    "quantity": "100"
+  },
+  {
+    "name": "High-Mileage",
+    "image": "conventional_oil.jfif",
+    "price": "99",
+    "quantity": "110"
+  },
+  {
+    "name": "Synthetic",
+    "image": "synthetic_oil.jfif",
+    "price": "89",
+    "quantity": "100"
+  },
+  {
+    "name": "Synthetic Blend",
+    "image": "synthetic_oil.jfif",
+    "price": "77",
+    "quantity": "100"
+  }
+]
