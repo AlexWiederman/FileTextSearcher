@@ -21,15 +21,28 @@ function SearchButtons() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}> */}
         <input type="text" value={query} onChange={handleQueryChange} />
-        <button type="submit">Search</button>
-      </form>
+        <button type="submit" onChange={handleQueryChange} onClick={handleSubmit}>Search</button>
+      {/* </form> */}
+      <div>
+        Hello {results}
+      </div>
+      {results.length > 0 ? (
+        
       <ul>
+        
         {results.map((result) => (
+          
           <li key={result}>{result}</li>
         ))}
       </ul>
+       ) : (
+        <ul>
+          No Results
+        </ul>
+       )}
+
     </div>
   );
 }

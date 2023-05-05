@@ -63,66 +63,80 @@ app.get('/search', (req, res) => {
   res.send(results);
 });
 
-// function searchFiles( searchText, dir) {
-//   // console.log(`Search: ${searchText} Dir: ${dir}`)
-//   const results = [];
-//   fs.readdir(dir, (err, files) => {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
+function searchFiles(searchText,dir) {
+  // console.log(`Search: ${searchText} Dir: ${dir}`)
 
-//     files.forEach((file) => {
-//       const filePath = path.join(dir, file);
 
-//       fs.stat(filePath, (err, stat) => {
-//         if (err) {
-//           console.error(err);
-//           return;
-//         }
+  const results = [];
+  console.log(`SearchText ${searchText} Dir ${dir}`)
 
-//         if (stat.isDirectory()) {
-//           searchFiles(filePath, searchText);
-//         } else {
-//           fs.readFile(filePath, 'utf8', (err, data) => {
-//             if (err) {
-//               console.error(err);
-//               return;
-//             }
 
-//             if (data.indexOf(searchText) !== -1) {
-//               results = `Found '${searchText}' in file '${filePath}'`
-//               return results
-//               // console.log(`Found '${searchText}' in file '${filePath}'`);
+  fs.readdir(dir, (err, files) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
 
-//             }
-//           });
-//         }
-//       });
-//     });
-//   });
-// }
+    files.forEach((file) => {
+      console.log(`File: ${file}`)
+      const filePath = path.join(dir, file);
+
+      fs.stat(filePath, (err, stat) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        if (stat.isDirectory()) {
+          searchFiles(filePath, searchText);
+        } else {
+          fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+
+            if (data.indexOf(searchText) !== -1) {
+              results.push(filePath);
+              
+              console.log(`Found '${searchText}' in file '${filePath}'`);
+              
+              return results;
+              
+              
+
+            }
+          });
+        }
+      });
+    });
+    
+  });
+
+
+}
 
 
 //Text found in file name WORKS
 
-function searchFiles(query, dir) {
-  const files = fs.readdirSync(dir);
-  const results = [];
+// function searchFiles(query, dir) {
+//   const files = fs.readdirSync(dir);
+//   const results = [];
 
-  for (const file of files) {
-    const filePath = path.join(dir, file);
-    const stat = fs.statSync(filePath);
+//   for (const file of files) {
+//     const filePath = path.join(dir, file);
+//     const stat = fs.statSync(filePath);
 
-    if (stat.isDirectory()) {
-      results.push(...searchFiles(query, filePath));
-    } else if (file.includes(query)) {
-      results.push(filePath);
-    }
-  }
+//     if (stat.isDirectory()) {
+//       results.push(...searchFiles(query, filePath));
+//     } else if (file.includes(query)) {
+//       results.push(filePath);
+//     }
+//   }
 
-  return results;
-}
+//   return results;
+// }
+
 
 // function searchFiles(dir, searchText, results) {
 //   results = results || [];
@@ -182,7 +196,42 @@ function searchFiles(query, dir) {
 //   return results;
 // }
 
+// function searchFiles(searchText, dir) {
+//   console.log(`Dir ${dir} Search ${searchText}`)
+//   fs.readdir(dir, (err, files) => {
+//     if (err) {
+//       console.error(err);
+//       return;
+//     }
 
+//     files.forEach((file) => {
+//       const filePath = path.join(dir, file);
+
+//       fs.stat(filePath, (err, stat) => {
+//         if (err) {
+//           console.error(err);
+//           return;
+//         }
+
+//         if (stat.isDirectory()) {
+//           searchFiles(filePath, searchText);
+//         } else {
+//           fs.readFile(filePath, 'utf8', (err, data) => {
+//             if (err) {
+//               console.error(err);
+//               return;
+//             }
+
+//             if (data.indexOf(searchText) !== -1) {
+
+//               console.log(`Found '${searchText}' in file '${filePath}'`);
+//             }
+//           });
+//         }
+//       });
+//     });
+//   });
+// }
 
 // Call the async function to start the server
   startApolloServer(typeDefs, resolvers);
