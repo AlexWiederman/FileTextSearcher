@@ -15,7 +15,10 @@ function SearchButtons() {
     event.preventDefault();
     fetch(`/search?q=${query}`)
       .then((response) => response.json())
-      .then((data) => setResults(data))
+      .then((data) =>{
+        console.log(`Data: ${data}`)
+        setResults(data)
+      })
       .catch((error) => console.log(error));
   };
 

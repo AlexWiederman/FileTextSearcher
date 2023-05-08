@@ -88,7 +88,7 @@ function searchFiles(searchText,dir) {
         }
 
         if (stat.isDirectory()) {
-          searchFiles(filePath, searchText);
+          searchFiles(searchText, filePath);
         } else {
           fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
