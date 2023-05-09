@@ -49,8 +49,8 @@ const startApolloServer = async (typeDefs, resolvers) => {
 // Start of new Knowledgebase Code
 const fs = require('fs');
 
-
-app.get('/search', (req, res) => {
+const results = []; //Do not know where to put clearing out array at
+app.get('/search', async (req, res) => {
 
   const query = req.query.q;
   // console.log(__dirname)
@@ -58,63 +58,77 @@ app.get('/search', (req, res) => {
   let location = "C:\\ExampleKnowledgebase"
   // const query = "Test1.txt"
 
-  const results = searchFiles(query, location);
+  const results = await searchFiles(query, location);
+ console.log(`app.get ${results}`)
 
   res.send(results);
 });
 
-function searchFiles(searchText,dir) {
-  // console.log(`Search: ${searchText} Dir: ${dir}`)
 
+// function searchFiles(searchText,dir) {
+//   // console.log(`Search: ${searchText} Dir: ${dir}`) 
+//   console.log(`SearchText ${searchText} Dir ${dir}`)
+//   fs.readdir(dir, (err, files) => {
+//     if (err) {
+//       console.error(err);
+//       return;
+//     }
+//     files.forEach((file) => {
+//       console.log(`File: ${file}`)
+//       const filePath = path.join(dir, file);
 
-  const results = [];
-  console.log(`SearchText ${searchText} Dir ${dir}`)
+//       fs.stat(filePath, (err, stat) => {
+//         if (err) {
+//           console.error(err);
+//           return;
+//         }
+//         if (stat.isDirectory()) {
+//           searchFiles(searchText, filePath);
+//         } else {
+//           fs.readFile(filePath, 'utf8', (err, data) => {
+//             if (err) {
+//               console.error(err);
+//               return;
+//             }
+//             if (data.indexOf(searchText) !== -1) {
+//               results.push(filePath);              
+//               console.log(`Found '${searchText}' in file '${filePath}'`);
+//               return results;
+//             }
+//           });
+//         }
+//       });
+//     });
+//     console.log(results)
+//   });
+// }
 
+// Updated Wroking with Promise
 
-  fs.readdir(dir, (err, files) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+const searchFiles = async (searchText, dir) => {
+  let results = [];
+  const files = await fs.promises.readdir(dir);
 
-    files.forEach((file) => {
-      console.log(`File: ${file}`)
+  await Promise.all(
+    files.map(async (file) => {
       const filePath = path.join(dir, file);
+      const stat = await fs.promises.stat(filePath);
 
-      fs.stat(filePath, (err, stat) => {
-        if (err) {
-          console.error(err);
-          return;
+      if (stat.isDirectory()) {
+        const subResults = await searchFiles(searchText, filePath);
+        results = results.concat(subResults);
+      } else if (stat.isFile()) {
+        const data = await fs.promises.readFile(filePath, 'utf8');
+
+        if (data.includes(searchText)) {
+          results.push(filePath);
         }
+      }
+    })
+  );
 
-        if (stat.isDirectory()) {
-          searchFiles(searchText, filePath);
-        } else {
-          fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-
-            if (data.indexOf(searchText) !== -1) {
-              results.push(filePath);
-              
-              console.log(`Found '${searchText}' in file '${filePath}'`);
-              
-              return results;
-              
-              
-
-            }
-          });
-        }
-      });
-    });
-    
-  });
-
-
-}
+  return results;
+};
 
 
 //Text found in file name WORKS

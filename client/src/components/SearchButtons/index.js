@@ -16,10 +16,10 @@ function SearchButtons() {
     fetch(`/search?q=${query}`)
       .then((response) => response.json())
       .then((data) =>{
-        console.log(`Data: ${data}`)
-        setResults(data)
+        console.log('Data:', data);
+        setResults(data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log('Error:', error));
   };
 
   return (
@@ -28,9 +28,6 @@ function SearchButtons() {
         <input type="text" value={query} onChange={handleQueryChange} />
         <button type="submit" onChange={handleQueryChange} onClick={handleSubmit}>Search</button>
       {/* </form> */}
-      <div>
-        Hello {results}
-      </div>
       {results.length > 0 ? (
         
       <ul>
