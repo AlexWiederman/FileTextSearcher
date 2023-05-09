@@ -51,11 +51,12 @@ const fs = require('fs');
 
 const results = []; //Do not know where to put clearing out array at
 app.get('/search', async (req, res) => {
+  const location = req.query.d
 
   const query = req.query.q;
   // console.log(__dirname)
   // let location = "C:\ExampleKnowledgebase"
-  let location = "C:\\ExampleKnowledgebase"
+  // let location = "C:\\ExampleKnowledgebase" //WORKS
   // const query = "Test1.txt"
 
   const results = await searchFiles(query, location);
@@ -151,101 +152,6 @@ const searchFiles = async (searchText, dir) => {
 //   return results;
 // }
 
-
-// function searchFiles(dir, searchText, results) {
-//   results = results || [];
-
-//   fs.readdir(dir, (err, files) => {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
-
-//     files.forEach((file) => {
-//       const filePath = path.join(dir, file);
-
-//       fs.stat(filePath, (err, stat) => {
-//         if (err) {
-//           console.error(err);
-//           return;
-//         }
-
-//         if (stat.isDirectory()) {
-//           searchFiles(filePath, searchText, results);
-//         } else {
-//           fs.readFile(filePath, 'utf8', (err, data) => {
-//             if (err) {
-//               console.error(err);
-//               return;
-//             }
-
-//             if (data.indexOf(searchText) !== -1) {
-//               console.log(`Found '${searchText}' in file '${filePath}'`);
-//               results.push(filePath);
-//             }
-//           });
-//         }
-//       });
-//     });
-//   });
-// }
-
-
-// function searchFiles(query, location) {
-//   const results = [];
-// console.log(`Test1 ${location}`)
-//   fs.readdirSync(query).forEach((file) => {
-//     const filePath = path.join(query, file);
-
-//     if (fs.statSync(filePath).isDirectory()) {
-//       results.push(...searchFiles(filePath, location));
-//     } else {
-//       const fileContent = fs.readFileSync(filePath, 'utf8');
-//       if (fileContent.includes(location)) {
-//         results.push(filePath);
-//       }
-//     }
-//   });
-
-//   return results;
-// }
-
-// function searchFiles(searchText, dir) {
-//   console.log(`Dir ${dir} Search ${searchText}`)
-//   fs.readdir(dir, (err, files) => {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
-
-//     files.forEach((file) => {
-//       const filePath = path.join(dir, file);
-
-//       fs.stat(filePath, (err, stat) => {
-//         if (err) {
-//           console.error(err);
-//           return;
-//         }
-
-//         if (stat.isDirectory()) {
-//           searchFiles(filePath, searchText);
-//         } else {
-//           fs.readFile(filePath, 'utf8', (err, data) => {
-//             if (err) {
-//               console.error(err);
-//               return;
-//             }
-
-//             if (data.indexOf(searchText) !== -1) {
-
-//               console.log(`Found '${searchText}' in file '${filePath}'`);
-//             }
-//           });
-//         }
-//       });
-//     });
-//   });
-// }
 
 // Call the async function to start the server
   startApolloServer(typeDefs, resolvers);
