@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useStoreContext } from "../../utils/GlobalState";
-import { idbPromise } from "../../utils/helpers";
+import React, { useState } from "react";
+// import { useStoreContext } from "../../utils/GlobalState";
+// import { idbPromise } from "../../utils/helpers";
 
 
 function SearchButtons() {
@@ -30,16 +30,24 @@ function SearchButtons() {
     <div>
 
 <div>
+  <p>
+    This will search for the Text in either file names or text that is various file types, such as .xls, .doc, or .txt.
+  </p>
         Search Text: 
         <input type="text" value={query} onChange={handleQueryChange} />
       </div>
+      
       <div>
         Search Location: 
         <input type="text" value={directory} onChange={handleDirectoryChange} />
+        Ex: C:\ExampleKnowledgebase
       </div>
       <div>
         <button type="submit" onClick={handleSubmit}>Search</button>
       </div>
+      <p>
+        *Will not work with files larger than 2gb and not reccomended to use a One Drive directory.
+      </p>
       {/* <form onSubmit={handleSubmit}> */}
         {/* <input type="text" value={query} onChange={handleQueryChange} />
         <button type="submit" onChange={handleQueryChange} onClick={handleSubmit}>Search</button> */}
